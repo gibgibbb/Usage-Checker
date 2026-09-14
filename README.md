@@ -4,13 +4,13 @@ A small Windows WPF companion, built with the Windows .NET Framework compiler. N
 
 ## Run
 
-Double-click `bin/CodexMonitor.exe` while Codex is open. The left percentage is five-hour remaining; the next is weekly remaining. Hover for labels, reset times and the last successful refresh.
+Double-click `bin/CodexMonitor.exe` while Codex is open. The 264 x 164 compact card shows two labeled remaining percentages, slim usage bars, reset times, and a clock. It docks 12 logical pixels below the top of the monitor working area. Old positions migrate once; dragging saves a custom position. Right-click Move to top-center to dock again.
 
 Right-click for refresh, always-on-top, system/dark/light theme, centering, tray hiding, and exit. Double-click the widget to hide it. Restore it from the tray. Position, theme and topmost preference are saved under `%LOCALAPPDATA%/CodexUsageMonitor/settings.json`.
 
 The widget refreshes every 60 seconds, retries with backoff on connection failure, and labels retained values stale. Missing windows display an em dash. It launches its own usage-only Codex backend over private stdio. It never submits prompts, answers approvals, or controls desktop tasks.
 
-`Status —` is intentional: desktop task events have not been connected. It does not mean the desktop is idle. This is phase 2, the usage widget. Automatic launch-at-Codex-start is a later lifecycle phase; it is not installed yet. The widget exits after a detected Codex desktop process disappears for eight seconds, but closing only a window while Codex stays resident may not trigger that.
+The empty task-status placeholder is omitted; desktop task monitoring remains on hold. This is phase 2, the usage widget. Automatic launch-at-Codex-start is a later lifecycle phase; it is not installed yet. The widget exits after a detected Codex desktop process disappears for eight seconds, but closing only a window while Codex stays resident may not trigger that.
 
 ## Build and test
 
@@ -48,3 +48,7 @@ The installer uses PowerShell 7 (`ConvertFrom-Json -AsHashtable`). Existing hook
 - No complete task-state indicator, spinner, startup watcher, cloud-task tracking, or installer yet.
 - Resource use must include both monitor and usage backend. The first WPF process sample was about 160 MiB and its live helper about 105 MiB; this is not yet an ultra-low-memory implementation.
 - No cached account limits are persisted to disk. During a failed refresh, only the existing in-memory snapshot is shown as stale.
+
+## UI design
+
+The native WPF card adapts the daisyUI skill card/progress patterns and semantic base/content/success color roles. daisyUI CSS itself cannot style WPF controls; no browser runtime or web dependency was added. Deterministic visual previews: `bin/CodexMonitor.exe --preview-dark` and `--preview-light` render sample data to `probe/results/widget-dark.png` and `widget-light.png` without changing preferences or fetching usage.
